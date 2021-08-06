@@ -28,7 +28,7 @@ public class OrdersAPITest {
         String createOrderResponse = null;
         double totalDistance;
         try {
-            createOrderResponse = createOrderResponse(new String(Files.readAllBytes(Paths.get("src/main/resources/createOrderWithoutOrderAt.json"))), 201);
+            createOrderResponse = createOrderResponse(new String(Files.readAllBytes(Paths.get("src/test/resources/createOrderWithoutOrderAt.json"))), 201);
         } catch (IOException e) {
             log.info("please provide correct payload path location");
         }
@@ -46,7 +46,7 @@ public class OrdersAPITest {
         String createOrderResponse = null;
         double totalDistance;
         try {
-            createOrderResponse = createOrderResponse(new String(Files.readAllBytes(Paths.get("src/main/resources/createOrderWithOrderAt.json"))), 201);
+            createOrderResponse = createOrderResponse(new String(Files.readAllBytes(Paths.get("src/test/resources/createOrderWithOrderAt.json"))), 201);
         } catch (IOException e) {
             log.info("please provide correct payload path location");
         }
@@ -62,7 +62,7 @@ public class OrdersAPITest {
     public void createOrderErrorForSingleStop() {
         String createOrderResponse = null;
         try {
-            createOrderResponse = createOrderResponse(new String(Files.readAllBytes(Paths.get("src/main/resources/createOrderOneStop.json"))), 400);
+            createOrderResponse = createOrderResponse(new String(Files.readAllBytes(Paths.get("src/test/resources/createOrderOneStop.json"))), 400);
         } catch (IOException e) {
             log.info("please provide correct payload path location");
         }
@@ -74,7 +74,7 @@ public class OrdersAPITest {
     public void createOrderErrorForIncorrectLatLng() {
         String createOrderResponse = null;
         try {
-            createOrderResponse = createOrderResponse(new String(Files.readAllBytes(Paths.get("src/main/resources/createOrderErrorIncorrectLatLng.json"))), 503);
+            createOrderResponse = createOrderResponse(new String(Files.readAllBytes(Paths.get("src/test/resources/createOrderErrorIncorrectLatLng.json"))), 503);
         } catch (IOException e) {
             log.info("please provide correct payload path location");
         }
