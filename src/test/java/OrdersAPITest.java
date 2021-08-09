@@ -94,8 +94,9 @@ public class OrdersAPITest {
         verifyErrorMessage(createOrderResponse, expectedErrorMessage);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt" })
+    @Test
     public void fetchAssigningOrderForCorrectId() {
+        createOrderWithoutOrderAt();
         double totalDistance = 0;
         String fetchOrderResponse = fetchOrderResponse(orderId, 200);
 
@@ -111,8 +112,10 @@ public class OrdersAPITest {
         isCreatedDateBeforeTheOrderDate(fetchOrderResponse);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt","fetchAssigningOrderForCorrectId","takeOrderSuccessfully" })
+    @Test
     public void fetchOngoingOrderForCorrectId() {
+        createOrderWithoutOrderAt();
+        takeOrderSuccessfully();
         double totalDistance = 0;
         String fetchOrderResponse = fetchOrderResponse(orderId, 200);
 
@@ -128,8 +131,10 @@ public class OrdersAPITest {
         isCreatedDateBeforeTheOrderDate(fetchOrderResponse);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt","cancelOrderSuccessfullyAfterAssigning"})
+    @Test
     public void fetchCancelledOrderForCorrectId() {
+        createOrderWithoutOrderAt();
+        cancelOrderSuccessfullyAfterAssigning();
         double totalDistance = 0;
         String fetchOrderResponse = fetchOrderResponse(orderId, 200);
 
@@ -145,8 +150,11 @@ public class OrdersAPITest {
         isCreatedDateBeforeTheOrderDate(fetchOrderResponse);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt","takeOrderSuccessfully","completeOrderSuccessfully"})
+    @Test
     public void fetchCompletedOrderForCorrectId() {
+        createOrderWithoutOrderAt();
+        takeOrderSuccessfully();
+        completeOrderSuccessfully();
         double totalDistance = 0;
         String fetchOrderResponse = fetchOrderResponse(orderId, 200);
 
@@ -169,8 +177,9 @@ public class OrdersAPITest {
         verifyErrorMessage(fetchOrderResponse, expectedErrorMessage);
     }
 
-    @Test (dependsOnMethods = { "createOrderWithoutOrderAt" })
+    @Test
     public void takeOrderSuccessfully() {
+        createOrderWithoutOrderAt();
         String takeOrderResponse = updateOrderResponse(orderId, "take", 200);
 
         verifyIdIsOfTypeInteger(takeOrderResponse);
@@ -178,24 +187,31 @@ public class OrdersAPITest {
         isStatusChangeTimePresent(takeOrderResponse, "ongoingTime");
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt","takeOrderSuccessfully" })
+    @Test
     public void failToTakeOrderForOngoingStatus() {
+        createOrderWithoutOrderAt();
+        takeOrderSuccessfully();
         String takeOrderResponse = updateOrderResponse(orderId, "take", 422);
 
         String expectedMessage = "Order status is not ASSIGNING";
         verifyErrorMessage(takeOrderResponse, expectedMessage);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt", "takeOrderSuccessfully","completeOrderSuccessfully"})
+    @Test
     public void failToTakeOrderForCompletedStatus() {
+        createOrderWithoutOrderAt();
+        takeOrderSuccessfully();
+        completeOrderSuccessfully();
         String takeOrderResponse = updateOrderResponse(orderId, "take", 422);
 
         String expectedMessage = "Order status is not ASSIGNING";
         verifyErrorMessage(takeOrderResponse, expectedMessage);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt","cancelOrderSuccessfullyAfterAssigning"})
+    @Test
     public void failToTakeOrderForCancelledStatus() {
+        createOrderWithoutOrderAt();
+        cancelOrderSuccessfullyAfterAssigning();
         String takeOrderResponse = updateOrderResponse(orderId, "take", 422);
 
         String expectedMessage = "Order status is not ASSIGNING";
@@ -210,8 +226,10 @@ public class OrdersAPITest {
         verifyErrorMessage(takeOrderResponse, expectedMessage);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt","takeOrderSuccessfully" })
+    @Test
     public void completeOrderSuccessfully() {
+        createOrderWithoutOrderAt();
+        takeOrderSuccessfully();
         String takeOrderResponse = updateOrderResponse(orderId, "complete", 200);
 
         verifyIdIsOfTypeInteger(takeOrderResponse);
@@ -227,16 +245,18 @@ public class OrdersAPITest {
         verifyErrorMessage(takeOrderResponse, expectedMessage);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt" })
+    @Test
     public void failToCompleteOrderForAnyInvalidStatus() {
+        createOrderWithoutOrderAt();
         String takeOrderResponse = updateOrderResponse(orderId, "complete", 422);
 
         String expectedMessage = "Order status is not ONGOING";
         verifyErrorMessage(takeOrderResponse, expectedMessage);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt" })
+    @Test
     public void cancelOrderSuccessfullyAfterAssigning() {
+        createOrderWithoutOrderAt();
         String takeOrderResponse = updateOrderResponse(orderId, "cancel", 200);
 
         verifyIdIsOfTypeInteger(takeOrderResponse);
@@ -244,8 +264,10 @@ public class OrdersAPITest {
         isStatusChangeTimePresent(takeOrderResponse, "cancelledAt");
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt","takeOrderSuccessfully" })
+    @Test
     public void cancelOrderSuccessfullyAfterOngoing() {
+        createOrderWithoutOrderAt();
+        takeOrderSuccessfully();
         String takeOrderResponse = updateOrderResponse(orderId, "cancel", 200);
 
         verifyIdIsOfTypeInteger(takeOrderResponse);
@@ -261,8 +283,11 @@ public class OrdersAPITest {
         verifyErrorMessage(takeOrderResponse, expectedMessage);
     }
 
-    @Test(dependsOnMethods = { "createOrderWithoutOrderAt","takeOrderSuccessfully","completeOrderSuccessfully" })
+    @Test
     public void failToCancelOrderForCompletedStatus() {
+        createOrderWithoutOrderAt();
+        takeOrderSuccessfully();
+        completeOrderSuccessfully();
         String takeOrderResponse = updateOrderResponse(orderId, "cancel", 422);
 
         String expectedMessage = "Order status is COMPLETED already";

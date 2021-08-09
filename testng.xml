@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="API Test Suite">
+    <test name="Order API" preserve-order="true">
+        <classes>
+            <class name="OrdersAPITest"/>
+            <methods>
+                <include name="createOrderWithOrderAtBetweenTenToFive"/>
+                <include name="createOrderWithoutOrderAt" />
+                <include name="createOrderErrorForSingleStop"/>
+                <include name="createOrderErrorForIncorrectLatLng"/>
+                <include name="createOrderErrorForMissingPayload"/>
+                <include name="fetchAssigningOrderForCorrectId"/>
+                <include name="fetchOngoingOrderForCorrectId"/>
+                <include name="fetchCancelledOrderForCorrectId"/>
+                <include name="fetchCompletedOrderForCorrectId"/>
+                <include name="fetchOrderForIncorrectId"/>
+                <include name="takeOrderSuccessfully"/>
+                <include name="failToTakeOrderForOngoingStatus"/>
+                <include name="failToTakeOrderForCompletedStatus"/>
+                <include name="failToTakeOrderForCancelledStatus"/>
+                <include name="failToTakeOrderForIncorrectOrderId"/>
+                <include name="completeOrderSuccessfully"/>
+                <include name="failToCompleteOrderForIncorrectOrderId"/>
+                <include name="failToCompleteOrderForAnyInvalidStatus"/>
+                <include name="cancelOrderSuccessfullyAfterAssigning"/>
+                <include name="cancelOrderSuccessfullyAfterOngoing"/>
+                <include name="failToCancelOrderForIncorrectOrderId"/>
+                <include name="failToCancelOrderForCompletedStatus"/>
+            </methods>
+        </classes>
+    </test>
+</suite>
